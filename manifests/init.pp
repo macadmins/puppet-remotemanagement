@@ -41,5 +41,5 @@ class remotemanagement {
   if versioncmp($::macosx_productversion_major, $min_os_version) < 0 {
     fail("unsupported product version: ${::macosx_productversion_major}")
   }
-  containt remotemanagement::ard
+  contain remotemanagement::ard
 }
