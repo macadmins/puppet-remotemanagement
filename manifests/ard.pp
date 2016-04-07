@@ -170,7 +170,7 @@ class remotemanagement::ard (
 
     mac_profiles_handler::manage { 'com.github.macadmins.remotemanagement':
       ensure      => $ensure,
-      file_source => template('com.apple.RemoteManagement.erb'),
+      file_source => template('remotemanagement/com.apple.RemoteManagement.erb'),
       type        => 'template',
     }
 
