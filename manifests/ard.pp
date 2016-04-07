@@ -163,17 +163,15 @@ class remotemanagement::ard (
 
     remotemanagement { 'apple_remote_desktop':
       ensure               => $ensure,
-      #allow_all_users     => $allow_all_users,
-      #all_users_privs     => $all_users_privs,
-      #enable_menu_extra   => $enable_menu_extra,
-      #enable_dir_logins   => $enable_dir_logins,
-      #allowed_dir_groups  => $allowed_dir_groups,
-      #enable_legacy_vnc   => $enable_legacy_vnc,
       vnc_password         => $vnc_password,
-      #allow_vnc_requests  => $allow_vnc_requests,
-      #allow_wbem_requests => $allow_webm_requests,
       users                => $users,
       strict               => $strict,
+    }
+
+    mac_profiles_handler::manage { 'com.github.macadmins.remotemanagement':
+      ensure      => $ensure,
+      file_source => template('com.apple.RemoteManagement'),
+      type        => 'template',
     }
 
   }
