@@ -61,71 +61,6 @@ Puppet::Type.newtype(:remotemanagement) do
     defaultto 'apple_remote_desktop'
   end
 
-  newproperty(:allow_all_users) do
-    desc "Whether to enable ARD access for ALL local users of the machine."
-
-    munge do |value|
-      @resource.munge_boolean(value)
-    end
-
-    newvalues(true, false)
-    defaultto false
-  end
-
-  newproperty(:all_users_privs) do
-    desc "The privleges to use when the :allow_all_users bool is set to true."
-
-    munge do |value|
-      value.to_s
-    end
-  end
-
-  newproperty(:enable_menu_extra) do
-    desc "Enable or disable the ARD menu extra in the user's task bar."
-
-    munge do |value|
-      @resource.munge_boolean(value)
-    end
-
-    newvalues(true, false)
-    defaultto false
-  end
-
-  newproperty(:enable_dir_logins) do
-    desc "Allow the special directory groups to be used."
-
-    munge do |value|
-      @resource.munge_boolean(value)
-    end
-
-    newvalues(true, false)
-    defaultto false
-  end
-
-  newproperty(:allowed_dir_groups, :array_matching => :all) do
-    desc "A list of directory groups allowed to access to the service."
-
-    def insync?(is)
-      if is == :absent
-        [] == should
-      else
-        is.sort == should.sort
-      end
-    end
-
-    defaultto { return Array.new }
-  end
-
-  newproperty(:enable_legacy_vnc) do
-    desc "Enable or disable legacy VNC support. Just a bad idea all around."
-
-    munge do |value|
-      @resource.munge_boolean(value)
-    end
-
-    newvalues(true, false)
-    defaultto false
-  end
 
   newproperty(:vnc_password) do
     desc "The password used for VNC, stored as plain text!
@@ -144,27 +79,6 @@ Puppet::Type.newtype(:remotemanagement) do
     end
   end
 
-  newproperty(:allow_vnc_requests) do
-    desc "Allow VNC guests to request permission?"
-
-    munge do |value|
-      @resource.munge_boolean(value)
-    end
-
-    newvalues(true, false)
-    defaultto false
-  end
-
-  newproperty(:allow_wbem_requests) do
-    desc "Allow incoming WBEM requests over IP."
-
-    munge do |value|
-      @resource.munge_boolean(value)
-    end
-
-    newvalues(true, false)
-    defaultto false
-  end
 
   newproperty(:users) do
     desc "A hash containing a username to privilege mapping."

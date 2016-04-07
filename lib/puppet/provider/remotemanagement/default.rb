@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'cfpropertylist'
 require 'puppet/remotemanagement/common'
 
 Puppet::Type.type(:remotemanagement).provide(:default) do
@@ -15,7 +14,6 @@ Puppet::Type.type(:remotemanagement).provide(:default) do
   has_feature :enableable
 
   DSLOCAL_USERS_DIR = '/private/var/db/dslocal/nodes/Default/users'
-  ARD_PREFERENCES   = '/Library/Preferences/com.apple.RemoteManagement.plist'
   VNC_PASSWORD_FILE = '/Library/Preferences/com.apple.VNCSettings.txt'
   VNC_SEED          = '1734516E8BA8C5E2FF1C39567390ADCA'
 
@@ -33,18 +31,9 @@ Puppet::Type.type(:remotemanagement).provide(:default) do
     end
 
     def get_service_properties
-      prefs = read_plist(ARD_PREFERENCES)
       { :name                  => 'apple_remote_desktop',
         :ensure                => service_active? ? :running : :stopped,
-        :allow_all_users       => prefs['ARD_AllLocalUsers'],
-        :all_users_privs       => prefs['ARD_AllLocalUsersPrivs'],
-        :enable_menu_extra     => prefs['LoadRemoteManagementMenuExtra'],
-        :enable_dir_logins     => prefs['DirectoryGroupLoginsEnabled'],
-        :allowed_dir_groups    => (prefs['DirectoryGroupList'] || '').split(','),
-        :enable_legacy_vnc     => prefs['VNCLegacyConnectionsEnabled'],
         :vnc_password          => read_vnc_password(VNC_PASSWORD_FILE),
-        :allow_vnc_requests    => prefs['ScreenSharingReqPermEnabled'],
-        :allow_wbem_requests   => prefs['WBEMIncomingAccessEnabled'],
         :users                 => get_all_ard_users,
       }.delete_if { |k,v,| v.nil? }
     end
@@ -106,26 +95,7 @@ Puppet::Type.type(:remotemanagement).provide(:default) do
       Hash[*raw.split]
     end
 
-    def read_plist(path)
-      return {} unless File.exists? path
-      plist = CFPropertyList::List.new(:file => path)
-      return {} unless plist
-      CFPropertyList.native_types(plist.value)
-    end
 
-    def write_plist(path, content, format)
-      f = case format
-      when :xml
-        CFPropertyList::List::FORMAT_XML
-      when :binary
-        CFPropertyList::List::FORMAT_BINARY
-      else
-        raise Puppet::Error, "Bad Format: #{format}"
-      end
-      plist = CFPropertyList::List.new
-      plist.value = CFPropertyList.guess(content)
-      plist.save(path, f, {:formatted => true})
-    end
 
   end
 
@@ -221,23 +191,8 @@ Puppet::Type.type(:remotemanagement).provide(:default) do
     end
   end
 
-  def write_preferences
-    prefs = {
-      'ARD_AllLocalUsers'             => resource[:allow_all_users],
-      'ARD_AllLocalUsersPrivs'        => resource[:all_users_privs],
-      'LoadRemoteManagementMenuExtra' => resource[:enable_menu_extra],
-      'DirectoryGroupLoginsEnabled'   => resource[:enable_dir_logins],
-      'DirectoryGroupList'            => resource[:allowed_dir_groups].join(','),
-      'VNCLegacyConnectionsEnabled'   => resource[:enable_legacy_vnc],
-      'ScreenSharingReqPermEnabled'   => resource[:allow_vnc_requests],
-      'WBEMIncomingAccessEnabled'     => resource[:allow_wbem_requests],
-    }.delete_if { |k,v| v.nil? }
-    self.class.write_plist(ARD_PREFERENCES, prefs, :xml)
-    system('/usr/bin/killall', 'cfprefsd')
-  end
 
   def flush
-    write_preferences
     configure_access
     if resource[:ensure] == :stopped
       service_deactivate if running?
