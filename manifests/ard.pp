@@ -168,8 +168,14 @@ class remotemanagement::ard (
       strict               => $strict,
     }
 
+    $ensure_profile = $enable ? {
+      true     => present,
+      default  => absent,
+    }
+
+
     mac_profiles_handler::manage { 'com.github.macadmins.remotemanagement':
-      ensure      => $ensure,
+      ensure      => $ensure_profile,
       file_source => template('remotemanagement/com.apple.RemoteManagement.erb'),
       type        => 'template',
     }
