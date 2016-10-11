@@ -1,4 +1,4 @@
-# == Class: managedmac
+# == Class: remotemanagement
 #
 # Module initializer.
 #
@@ -19,9 +19,9 @@
 #
 # === Examples
 #
-#  include managedmac
+#  include remotemanagement
 #
-#  class { managedmac: }
+#  class { remotemanagement: }
 #
 # === Authors
 #

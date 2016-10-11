@@ -1,4 +1,4 @@
-# == Class: managedmac::remotemanagement
+# == Class: remotemanagement::ard
 #
 # Leverages the Remotemanagement type to manage and configure the Apple Remote
 # Desktop service.
@@ -89,12 +89,12 @@
 #
 #  # Example: defaults.yaml
 #  ---
-#  managedmac::remotemanagement::enable: true
-#  managedmac::remotemanagement::users:
+#  remotemanagement::ard::enable: true
+#  remotemanagement::ard::users:
 #    user_a: -1073741569
 #    user_b: -1073741569
-#  managedmac::remotemanagement::enable_dir_logins: true
-#  managedmac::remotemanagement::allowed_dir_groups:
+#  remotemanagement::ard::enable_dir_logins: true
+#  remotemanagement::ard::allowed_dir_groups:
 #    - com.apple.local.ard_admin
 #    - com.apple.local.ard_interact
 #    - com.apple.local.ard_manage
@@ -103,12 +103,12 @@
 # Then simply, create a manifest and include the class...
 #
 #  # Example: my_manifest.pp
-#  include managedmac::remotemanagement
+#  include remotemanagement::ard
 #
 # If you just wish to test the functionality of this class, you could also do
 # something along these lines:
 #
-#  class { 'managedmac::remotemanagement':
+#  class { 'remotemanagement::ard':
 #    enable           => true,
 #    allow_all_users  => false,
 #    users            => {'fred' => -1073741569,
