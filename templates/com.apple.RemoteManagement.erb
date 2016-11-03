@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadContent</key>
+			<dict>
+				<key>/Library/Preferences/com.apple.RemoteManagement</key>
+				<dict>
+					<key>Forced</key>
+					<array>
+						<dict>
+							<key>mcx_preference_settings</key>
+							<dict>
+								<key>ARD_AllLocalUsers</key>
+                                <<%= @allow_all_users -%>/>
+								<key>ARD_AllLocalUsersPrivs</key>
+                                <string><%= @all_users_privs -%></string>
+								<key>DirectoryGroupList</key>
+								<string></string>
+								<key>DirectoryGroupLoginsEnabled</key>
+								<false/>
+								<key>DisableKerberos</key>
+								<false/>
+								<key>LoadRemoteManagementMenuExtra</key>
+                                <<%= @enable_menu_extra -%>/>
+								<key>ScreenSharingReqPermEnabled</key>
+								<false/>
+								<key>VNCLegacyConnectionsEnabled</key>
+								<false/>
+								<key>WBEMIncomingAccessEnabled</key>
+								<false/>
+							</dict>
+						</dict>
+					</array>
+				</dict>
+			</dict>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadIdentifier</key>
+			<string>com.github.macadmins.remotemanagement</string>
+			<key>PayloadType</key>
+			<string>com.apple.ManagedClient.preferences</string>
+			<key>PayloadUUID</key>
+			<string>2d940e13-2c9d-462e-b20a-b92f9ec0867d</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>ARD Settings </string>
+	<key>PayloadDisplayName</key>
+	<string>ARD Settings</string>
+	<key>PayloadIdentifier</key>
+	<string>com.github.macadmins.remotemanagement</string>
+	<key>PayloadOrganization</key>
+	<string></string>
+	<key>PayloadRemovalDisallowed</key>
+	<true/>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>786b53ce-8c1a-4788-9ba5-73bb6759474b</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
+
